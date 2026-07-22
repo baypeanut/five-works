@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noah Dericioğlu — Five Works</title>
+<style>
+  :root {
+    /* gallery wall, day */
+    --wall:   #E7E5DE;
+    --wall-2: #DEDCD2;
+    --ink:    #1B1915;
+    --ink-2:  #474337;
+    --muted:  #837D6E;
+    --hair:   rgba(27, 25, 21, 0.16);
+    --hair-2: rgba(27, 25, 21, 0.30);
+    --accent: #A0392B;
+    --tag-bg: rgba(255, 255, 255, 0.55);
+    --card-shadow-a: 0 34px 66px rgba(52, 40, 20, 0.28);
+    --card-shadow-i: 0 16px 32px rgba(52, 40, 20, 0.20);
+    --floor: rgba(52, 40, 20, 0.16);
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Hoefler Text", Georgia, serif;
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, "Cascadia Code", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --wall:   #16150F;
+      --wall-2: #0E0D09;
+      --ink:    #EBE7DB;
+      --ink-2:  #B8B2A2;
+      --muted:  #857F70;
+      --hair:   rgba(235, 231, 219, 0.14);
+      --hair-2: rgba(235, 231, 219, 0.26);
+      --accent: #D5715F;
+      --tag-bg: rgba(255, 255, 255, 0.05);
+      --card-shadow-a: 0 36px 80px rgba(0, 0, 0, 0.62);
+      --card-shadow-i: 0 18px 40px rgba(0, 0, 0, 0.5);
+      --floor: rgba(0, 0, 0, 0.55);
+    }
+  }
+  :root[data-theme="light"] {
+    --wall:#E7E5DE; --wall-2:#DEDCD2; --ink:#1B1915; --ink-2:#474337; --muted:#837D6E;
+    --hair:rgba(27,25,21,0.16); --hair-2:rgba(27,25,21,0.30); --accent:#A0392B;
+    --tag-bg:rgba(255,255,255,0.55);
+    --card-shadow-a:0 34px 66px rgba(52,40,20,0.28); --card-shadow-i:0 16px 32px rgba(52,40,20,0.20);
+    --floor:rgba(52,40,20,0.16);
+  }
+  :root[data-theme="dark"] {
+    --wall:#16150F; --wall-2:#0E0D09; --ink:#EBE7DB; --ink-2:#B8B2A2; --muted:#857F70;
+    --hair:rgba(235,231,219,0.14); --hair-2:rgba(235,231,219,0.26); --accent:#D5715F;
+    --tag-bg:rgba(255,255,255,0.05);
+    --card-shadow-a:0 36px 80px rgba(0,0,0,0.62); --card-shadow-i:0 18px 40px rgba(0,0,0,0.5);
+    --floor:rgba(0,0,0,0.55);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(120% 80% at 50% -10%, var(--wall), var(--wall-2) 78%);
+    color: var(--ink);
+    font-family: var(--serif);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--accent); color: var(--wall); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  .catalogue { max-width: 1160px; margin: 0 auto; padding: clamp(1.4rem, 4vw, 3rem) clamp(1.2rem, 5vw, 3rem) 4rem; }
+
+  .label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+
+  /* ---------- title page ---------- */
+  header.plate {
+    display: grid; grid-template-columns: 1fr auto; gap: 1.6rem 2rem; align-items: end;
+    padding-bottom: 1.5rem; border-bottom: 1px solid var(--hair-2);
+  }
+  .colophon-top { display: flex; gap: 1.2rem; align-items: baseline; margin-bottom: 1rem; }
+  .colophon-top .label { color: var(--muted); }
+  h1 {
+    margin: 0; font-weight: 400;
+    font-size: clamp(2.4rem, 7vw, 4.4rem); line-height: 0.95; letter-spacing: -0.02em;
+  }
+  .thesis {
+    margin: 0.7rem 0 0; font-style: italic; color: var(--ink-2);
+    font-size: clamp(1.05rem, 2.6vw, 1.5rem); max-width: 30ch; text-wrap: balance;
+  }
+  .wall-label {
+    text-align: right; font-family: var(--mono); font-size: 0.74rem; line-height: 1.85;
+    color: var(--ink-2); border-right: 2px solid var(--accent); padding-right: 0.9rem;
+  }
+  .wall-label .k { display: block; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .wall-label .role { color: var(--accent); font-weight: 600; letter-spacing: 0.02em; }
+  .wall-label .team { color: var(--ink); }
+
+  /* ---------- gallery / deck ---------- */
+  .gallery { padding: clamp(1.5rem, 4vw, 2.4rem) 0 0; }
+  .gallery-cap {
+    display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.6rem;
+    border-bottom: 1px solid var(--hair); padding-bottom: 0.7rem; margin-bottom: clamp(1.4rem, 4vw, 2.6rem);
+  }
+  .gallery-cap h2 { margin: 0; font-weight: 400; font-size: 1.1rem; letter-spacing: 0.01em; }
+  .gallery-cap h2 em { font-style: italic; color: var(--muted); }
+
+  .stage-wrap { display: grid; place-items: center; position: relative; }
+  .stage {
+    position: relative;
+    width: min(88vw, 392px);
+    height: min(60vh, 528px);
+    perspective: 1700px;
+  }
+  .stage::after { /* soft floor shadow, works float on the wall */
+    content: ""; position: absolute; left: 50%; bottom: -34px; transform: translateX(-50%);
+    width: 62%; height: 30px; border-radius: 50%;
+    background: radial-gradient(ellipse, var(--floor), transparent 70%);
+    filter: blur(3px); z-index: 0;
+  }
+
+  .card {
+    position: absolute; inset: 0; margin: 0; padding: 0; border: 0; background: none;
+    cursor: pointer; transform-style: preserve-3d;
+    transition: transform 0.42s cubic-bezier(.2,.7,.2,1);
+    will-change: transform;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .card:focus-visible { outline: none; }
+  .card:focus-visible .card-inner { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 12px; }
+
+  .card-inner {
+    position: relative; width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.3,.7,.2,1);
+  }
+  .card.flipped .card-inner { transform: rotateY(180deg); }
+
+  .face {
+    position: absolute; inset: 0; border-radius: 11px; overflow: hidden;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    display: flex; flex-direction: column;
+    padding: 22px 22px 18px;
+    border: 1px solid rgba(42, 36, 24, 0.22);
+    transition: opacity 0.28s ease;
+  }
+  .face::before { /* paper grain */
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 140px 140px;
+  }
+  .face > * { position: relative; z-index: 1; }
+
+  .face.front {
+    background: var(--paper); color: var(--ink-card, #2a2418);
+    box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.5);
+  }
+  .face.back {
+    background: var(--dink); color: #f6efe0; transform: rotateY(180deg);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.06);
+  }
+  .card.flipped .face.front { opacity: 0; }
+  .card:not(.flipped) .face.back { opacity: 0; }
+
+  /* front */
+  .c-top { display: flex; justify-content: space-between; align-items: baseline; }
+  .c-top .cat { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.16em; color: var(--fa); font-weight: 600; }
+  .c-top .field { font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fa); }
+  .c-mid { margin-top: auto; }
+  .roman { font-family: var(--serif); font-style: italic; font-size: 2.1rem; line-height: 1; color: var(--fa); display: block; }
+  .c-title { margin: 0.35rem 0 0.5rem; font-weight: 500; font-size: clamp(1.45rem, 5.4vw, 2.05rem); line-height: 1.02; color: #2a2418; letter-spacing: -0.01em; }
+  .c-blurb { margin: 0; font-style: italic; font-size: 0.97rem; color: #4a4230; }
+  .c-note { margin: 0.9rem 0 0.7rem; font-style: italic; font-size: 0.9rem; color: var(--fa); opacity: 0; transition: opacity 0.3s; }
+  .card.active .c-note { opacity: 0.9; }
+  .c-medium { font-family: var(--mono); font-size: 0.53rem; letter-spacing: 0.02em; color: #6a5f45; margin: 0.2rem 0 0.7rem; line-height: 1.5; }
+  .c-bot { display: flex; justify-content: space-between; align-items: center; }
+  .turn {
+    font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fa);
+    border: 1px solid var(--fa); border-radius: 100px; padding: 0.32em 0.75em; background: rgba(255,255,255,0.5);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .card.active:not(.flipped) .turn { opacity: 1; }
+  .seal {
+    font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: #fff; background: var(--fa); padding: 0.34em 0.7em; border-radius: 3px; transform: rotate(-3deg);
+  }
+
+  /* back */
+  .b-top { display: flex; justify-content: space-between; align-items: baseline; }
+  .b-top .cat, .b-top .field { font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.15em; color: var(--ba); text-transform: uppercase; }
+  .b-title { margin: 0.7rem 0 0.25rem; font-weight: 500; font-size: 1.42rem; line-height: 1.05; color: #f8f2e4; }
+  .b-meta { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+  .b-body { margin-top: 0.7rem; overflow-y: auto; flex: 1; padding-right: 4px; }
+  .b-body p { margin: 0 0 0.75rem; font-size: 0.9rem; line-height: 1.5; color: rgba(248,242,228,0.86); }
+  .spec { display: flex; gap: 0.7rem; border-top: 1px solid rgba(255,255,255,0.15); padding: 0.4rem 0; }
+  .spec .k { flex: 0 0 5.4rem; font-family: var(--mono); font-size: 0.53rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ba); padding-top: 0.15rem; }
+  .spec .v { font-size: 0.8rem; color: rgba(248,242,228,0.92); }
+  .b-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; border-top: 1px solid rgba(255,255,255,0.18); padding-top: 0.6rem; margin-top: 0.4rem; }
+  .b-foot .prov { font-family: var(--mono); font-size: 0.53rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ba); }
+  .b-foot .turn-back { font-family: var(--mono); font-size: 0.53rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .b-body::-webkit-scrollbar { width: 4px; }
+  .b-body::-webkit-scrollbar-thumb { background: var(--ba); border-radius: 4px; }
+
+  /* controls */
+  .controls { display: flex; align-items: center; justify-content: center; gap: 1.1rem; margin-top: 3.4rem; }
+  .nav-btn {
+    width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--hair-2);
+    background: var(--tag-bg); color: var(--ink); cursor: pointer; font-size: 1rem;
+    display: grid; place-items: center; transition: border-color 0.2s, background 0.2s;
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .dots { display: flex; gap: 0.5rem; align-items: center; }
+  .dot { width: 9px; height: 9px; border-radius: 100px; border: 0; background: var(--hair-2); cursor: pointer; padding: 0; transition: width 0.3s, background 0.3s; }
+  .dot.on { width: 26px; background: var(--accent); }
+
+  /* ---------- foreword + concordance + checklist ---------- */
+  .section { margin-top: clamp(3rem, 8vw, 5rem); }
+  .section > .label { display: block; margin-bottom: 1.1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--hair); }
+  .foreword { max-width: 62ch; }
+  .foreword p { margin: 0 0 1rem; font-size: clamp(1.02rem, 2.1vw, 1.16rem); color: var(--ink-2); }
+  .foreword p:first-of-type { font-size: clamp(1.12rem, 2.4vw, 1.32rem); color: var(--ink); }
+
+  .concordance { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--hair); }
+  .cx-row { display: contents; }
+  .cx { padding: 0.85rem 0; border-bottom: 1px solid var(--hair); }
+  .cx.req { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.02em; color: var(--ink); padding-right: 1.4rem; }
+  .cx.req::before { content: attr(data-n); color: var(--accent); margin-right: 0.7em; font-size: 0.66rem; }
+  .cx.ev { color: var(--ink-2); font-size: 0.96rem; padding-left: 1.4rem; border-left: 1px solid var(--hair); }
+  @media (max-width: 620px) {
+    .concordance { grid-template-columns: 1fr; }
+    .cx.ev { border-left: 0; padding-left: 0; padding-top: 0; border-bottom: 1px solid var(--hair); }
+    .cx.req { border-bottom: 0; padding-bottom: 0.2rem; }
+  }
+
+  .checklist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hair); }
+  .check-item {
+    display: grid; grid-template-columns: 2.4rem 1fr auto; gap: 1rem; align-items: baseline;
+    width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--hair);
+    padding: 0.95rem 0.4rem; cursor: pointer; color: var(--ink); font-family: var(--serif);
+    transition: background 0.2s, padding 0.2s;
+  }
+  .check-item:hover { background: var(--tag-bg); padding-left: 0.8rem; }
+  .check-item.on { padding-left: 0.8rem; }
+  .check-item.on .ci-cat { color: var(--accent); }
+  .ci-cat { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; }
+  .ci-main .ci-title { font-size: 1.08rem; }
+  .ci-main .ci-med { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin-top: 0.15rem; }
+  .ci-date { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  @media (max-width: 480px) { .ci-date { display: none; } .check-item { grid-template-columns: 2rem 1fr; } }
+
+  footer.colophon {
+    margin-top: clamp(3rem, 8vw, 5rem); padding-top: 1.4rem; border-top: 1px solid var(--hair-2);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em; color: var(--muted);
+  }
+
+  @media (max-width: 640px) {
+    header.plate { grid-template-columns: 1fr; align-items: start; }
+    .wall-label { text-align: left; border-right: 0; border-left: 2px solid var(--accent); padding-right: 0; padding-left: 0.9rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+
+<div class="catalogue">
+
+  <header class="plate">
+    <div>
+      <div class="colophon-top">
+        <span class="label">A survey of five works</span>
+        <span class="label">MMXXVI</span>
+      </div>
+      <h1>Noah Dericioğlu</h1>
+      <p class="thesis">Systems built to survive contact with the real world.</p>
+    </div>
+    <div class="wall-label">
+      <span class="k">Application to</span>
+      <span class="role">AI Engineering Intern</span>
+      <span class="team">UNC Finance &amp; Operations, AI Layer</span>
+      <a href="mailto:aderici@unc.edu">aderici@unc.edu</a><br>
+      (949) 438&#8202;8573
+    </div>
+  </header>
+
+  <section class="gallery">
+    <div class="gallery-cap">
+      <h2>The works <em>&nbsp;/ turn a card to read its entry</em></h2>
+      <span class="label" id="counter">01 / 05</span>
+    </div>
+    <div class="stage-wrap">
+      <div class="stage" id="stage" role="group" aria-label="Portfolio works, use arrow keys to browse"></div>
+    </div>
+    <div class="controls">
+      <button class="nav-btn" id="prev" aria-label="Previous work">&#8249;</button>
+      <div class="dots" id="dots"></div>
+      <button class="nav-btn" id="next" aria-label="Next work">&#8250;</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <span class="label">Curator&#8217;s note</span>
+    <div class="foreword" id="foreword"></div>
+  </section>
+
+  <section class="section">
+    <span class="label">The brief, and the evidence</span>
+    <div class="concordance" id="concordance"></div>
+  </section>
+
+  <section class="section">
+    <span class="label">Checklist of the exhibition</span>
+    <ul class="checklist" id="checklist"></ul>
+  </section>
+
+  <footer class="colophon">
+    <span>Noah Dericioğlu&nbsp;&nbsp;·&nbsp;&nbsp;aderici@unc.edu&nbsp;&nbsp;·&nbsp;&nbsp;(949) 438 8573</span>
+    <span>Five works, 2023 to 2026</span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var PROFILE = {
+    intro: "Five works made between a ship's bridge and a Paris apartment, a live order book and a wine glass. Each began as an algorithm and was carried somewhere it could fail, then engineered until it held.",
+    pitch: "I take ambiguous asks to working software that other people actually use. Python is my primary language, I build against real problems with language models, and I can explain the result to an engineer or a VP in the same meeting."
+  };
+
+  var FIT = [
+    ["Python, primary", "The through-line of every work below."],
+    ["LLM APIs, RAG, agents", "A six-model ensemble, LLM trading books, and Claude Vision label reads."],
+    ["Ships to production", "An operator portal used by DFDS staff while at sea."],
+    ["Cloud infrastructure", "An AWS ingestion pipeline and a self-hosted GPU box."],
+    ["Talks to non-technical stakeholders", "Presented results to leadership at the Copenhagen headquarters."],
+    ["Ownership and iteration", "Finds the gap, builds the bench rig, breaks things first."]
+  ];
+
+  var PALETTE = {
+    bridge:  { paper: "#FBF5E6", fa: "#1C6B5F", dink: "#0E3A33", ba: "#7FD8C2", note: "tested at sea" },
+    ac:      { paper: "#EEF4FB", fa: "#2F6EA8", dink: "#123C5C", ba: "#8FC6EC", note: "still building" },
+    fund:    { paper: "#FBF3DF", fa: "#A9711B", dink: "#442D06", ba: "#E6BD57", note: "control over hype" },
+    pari:    { paper: "#FBEEF1", fa: "#A83254", dink: "#451325", ba: "#E79BB0", note: "still building" },
+    evasion: { paper: "#F2EEFB", fa: "#5B4A9E", dink: "#282052", ba: "#B3A3ED", note: "honest over shiny" }
+  };
+
+  var PROJECTS = [
+    {
+      id: "bridge", roman: "I", n: "01", title: "Bridge AI Monitoring System",
+      role: "AI Project Lead, DFDS", year: "Dec 2023 to Aug 2024", field: "Maritime CV", seal: "SHIPPED",
+      medium: "Computer vision, AWS pipeline, live operator portal",
+      prov: "İstanbul / Trieste / Copenhagen",
+      blurb: "A computer vision system that watches a ship's bridge and automates safety audits and voyage reporting.",
+      body: [
+        "An end-to-end computer vision system that watches a ship's bridge and automates safety protocol audits and voyage reporting, work that otherwise depends on someone reviewing footage by hand after the fact.",
+        "I built an AWS pipeline that autonomously ingests each week's voyage recordings, keeping the models improving on real operational footage, and shipped a live web portal where operators track safety breaches and onboard metrics as they happen.",
+        "Algorithms do not survive first contact with the sea untouched, so I ran field research live on the İstanbul to Trieste route, tuning the architecture against real maritime conditions. I presented the results at the DFDS Copenhagen headquarters, and on the strength of the proof of concept my role was extended to lead the fleet-wide rollout."
+      ],
+      specs: [
+        ["Pipeline", "Weekly voyage recordings, autonomous ingest, continuous refinement"],
+        ["Delivery", "Live operator portal, breach and onboard metric tracking"],
+        ["Field test", "Active research, İstanbul to Trieste route"],
+        ["Outcome", "Copenhagen headquarters presentation, fleet-wide mandate"]
+      ]
+    },
+    {
+      id: "ac", roman: "II", n: "02", title: "Invisible AC",
+      role: "Independent", year: "May 2026, ongoing", field: "Climate hardware", seal: "ONGOING",
+      medium: "OpenSCAD CAD, ESP32 firmware, Python thermodynamics",
+      prov: "Paris",
+      blurb: "A drilling-free, renter-portable cooling system for European casement windows.",
+      body: [
+        "A drilling-free, renter-portable cooling system for European casement windows, where facade condensers are banned outright. The entire R290 refrigerant circuit lives in a sealed indoor column; heat leaves through a glycol loop to a mist-assisted microchannel panel tensioned into the window reveal. No permanent modification, and it comes with you when you move.",
+        "The engineering case runs end to end: COP modeling against wet-bulb mist-assist gains, a regulatory strategy weighing EN 60335-2-40 against F-Gas, and a competitive teardown of Caeli and Gradient by Midea. I am building a 3-node ESP32 data-acquisition rig to measure the highest-risk unknown first, whether the fan budget can reject the target heat load without breaking the noise ceiling."
+      ],
+      specs: [
+        ["Refrigerant", "R290, 150g or less, factory-sealed hermetic circuit"],
+        ["Beachhead", "Paris, where copropriété facade rules make the case strongest"],
+        ["Open risk", "The fan power, noise, and capacity triangle, still unvalidated"],
+        ["Phase", "Phase 1 rig, bill of materials confirmed, COP pipeline validated"]
+      ]
+    },
+    {
+      id: "fund", roman: "III", n: "03", title: "Multi-Strategy Systematic Fund",
+      role: "Independent", year: "Nov 2025, ongoing", field: "Systematic markets", seal: "LIVE",
+      medium: "Python, local LLM (Ollama), Hetzner",
+      prov: "Cloud",
+      blurb: "A four-book systematic trading system with a deterministic quant control book.",
+      body: [
+        "A four-book systematic trading system: quant, news and event, LLM discretionary, and a risk-parity ensemble of all three, run with realistic cost modeling before any real capital moves. The deterministic quant book is deliberately the control group. If the LLM books cannot beat it, the language model is only added cost.",
+        "No performance claim ships early. A pre-registered rule blocks any statement that the LLM has edge until 60 trading days and p below 0.05 on a paired Diebold-Mariano test against the control book."
+      ],
+      specs: [
+        ["Universe", "80% US equities (liquid large and mid cap), 20% crypto"],
+        ["Cost", "Free data plus a local LLM, running at roughly zero per month"],
+        ["Discipline", "Paired Diebold-Mariano (Newey-West), pre-registered threshold"],
+        ["Status", "Four books live, risk governor and dashboard deployed"]
+      ]
+    },
+    {
+      id: "pari", roman: "IV", n: "04", title: "Pari",
+      role: "Independent", year: "Jan 2026, ongoing", field: "Taste modeling", seal: "ONGOING",
+      medium: "SwiftUI, Supabase (pgvector), Claude Vision",
+      prov: "iOS",
+      blurb: "An iOS wine journal that turns a label scan into a tasting read and a personal taste graph.",
+      body: [
+        "An iOS wine journal for people who want more than a star rating. Scan a label to get a structured tasting read, then watch a personal taste graph build itself out from every bottle you log.",
+        "Every wine gets a 64-dimensional feature-hashed embedding. A hybrid similarity score (Pearson plus cosine, weighted by shared history) finds the users whose palate actually tracks yours, and a twin-weighted rating leans the community score toward them instead of the crowd average, with a content-based cosine fallback so a brand-new user is never stuck at a cold start."
+      ],
+      specs: [
+        ["Vision", "Label photo, Claude Haiku 4.5, structured tasting result"],
+        ["Personalize", "pgvector wine embeddings plus a twin-weighted rating"],
+        ["Integrity", "Trigram-indexed duplicate detection and merge"],
+        ["Design", "Old money, quiet luxury, a garnet ground and a Cormorant mark"]
+      ]
+    },
+    {
+      id: "evasion", roman: "V", n: "05", title: "Earnings-Call Evasiveness Classifier",
+      role: "Capstone, BUSI/COMP 488, UNC, advised by Prof. Ringel", year: "Jan 2026 to May 2026", field: "Applied NLP", seal: "CAPSTONE",
+      medium: "Python, RoBERTa-large, six LLM APIs, logistic-regression stacking",
+      prov: "UNC Chapel Hill",
+      blurb: "A stacking ensemble that flags evasive answers in earnings-call Q&A, measured against the human agreement ceiling.",
+      body: [
+        "A machine-learning classifier that reads earnings-call question and answer text and sorts each executive answer into Direct, Partially Evasive, or Fully Evasive. The core is a stacking ensemble: a fine-tuned RoBERTa-large base learner combined with six generative models (GPT-4o and 4.1, Claude, two Geminis, Grok) through a logistic-regression meta-classifier.",
+        "The part I am proudest of is the honesty. Three annotators only reached a Krippendorff alpha of 0.38, so instead of chasing a shiny number I measured that human ceiling and reported the ensemble's 0.71 F1 against it, above the 0.61 pairwise floor, with a leave-one-labeler-out check to prove it was not overfit to any single annotator."
+      ],
+      specs: [
+        ["Task", "3-class evasiveness, EvasionBench, 16,726 labeled Q&A pairs"],
+        ["Ensemble", "RoBERTa-large plus six LLMs, logistic-regression meta-learner"],
+        ["Result", "0.71 F1, above the 0.61 human pairwise agreement"],
+        ["Rigor", "Reports the alpha = 0.38 ceiling and leave-one-labeler-out robustness"]
+      ]
+    }
+  ];
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var BASE_ROT = [-4, 3, -2, 4, -3];
+  var SPREAD = 116;
+  var active = 0;
+  var flipped = {};
+  var stage = document.getElementById("stage");
+  var cards = [];
+
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  PROJECTS.forEach(function (p, i) {
+    var pal = PALETTE[p.id];
+    var btn = document.createElement("button");
+    btn.className = "card";
+    btn.setAttribute("data-index", i);
+    btn.setAttribute("aria-label", "Catalogue " + p.n + ", " + p.title + ". Activate to bring forward or flip.");
+    btn.style.setProperty("--paper", pal.paper);
+    btn.style.setProperty("--fa", pal.fa);
+    btn.style.setProperty("--dink", pal.dink);
+    btn.style.setProperty("--ba", pal.ba);
+
+    var specsF = p.specs.map(function (s) {
+      return '<div class="spec"><span class="k">' + esc(s[0]) + '</span><span class="v">' + esc(s[1]) + '</span></div>';
+    }).join("");
+    var bodyF = p.body.map(function (t) { return "<p>" + esc(t) + "</p>"; }).join("");
+
+    btn.innerHTML =
+      '<div class="card-inner">' +
+        '<div class="face front">' +
+          '<div class="c-top"><span class="cat">CAT. ' + p.n + '</span><span class="field">' + esc(p.field) + '</span></div>' +
+          '<div class="c-mid">' +
+            '<span class="roman">' + p.roman + '</span>' +
+            '<h3 class="c-title">' + esc(p.title) + '</h3>' +
+            '<p class="c-blurb">' + esc(p.blurb) + '</p>' +
+            '<p class="c-note">&#8220;' + esc(pal.note) + '&#8221;</p>' +
+          '</div>' +
+          '<p class="c-medium">' + esc(p.medium) + '</p>' +
+          '<div class="c-bot"><span class="turn">Turn over</span><span class="seal">' + p.seal + '</span></div>' +
+        '</div>' +
+        '<div class="face back">' +
+          '<div class="b-top"><span class="cat">CAT. ' + p.n + '</span><span class="field">' + esc(p.field) + '</span></div>' +
+          '<h3 class="b-title">' + esc(p.title) + '</h3>' +
+          '<div class="b-meta">' + esc(p.role) + ' &#183; ' + esc(p.year) + '</div>' +
+          '<div class="b-body">' + bodyF + specsF + '</div>' +
+          '<div class="b-foot"><span class="prov">' + esc(p.prov) + '</span><span class="turn-back">Turn back</span></div>' +
+        '</div>' +
+      '</div>';
+
+    btn.addEventListener("click", function () {
+      if (i === active) { flipped[i] = !flipped[i]; btn.classList.toggle("flipped", !!flipped[i]); }
+      else { setActive(i); }
+    });
+    stage.appendChild(btn);
+    cards.push(btn);
+  });
+
+  function layout() {
+    cards.forEach(function (c, i) {
+      var rel = i - active;
+      var a = Math.abs(rel);
+      var isActive = rel === 0;
+      var rot = isActive ? BASE_ROT[i % 5] * 0.4 : rel * 4 + BASE_ROT[i % 5] * 0.3;
+      var tx = isActive ? 0 : rel * SPREAD;
+      var ty = a * 16;
+      var sc = isActive ? 1 : 0.82;
+      c.style.transform = "translateX(" + tx + "px) translateY(" + ty + "px) rotate(" + rot + "deg) scale(" + sc + ")";
+      c.style.zIndex = 30 - a;
+      c.style.boxShadow = "none";
+      c.classList.toggle("active", isActive);
+      var inner = c.firstChild;
+      inner.style.boxShadow = isActive ? getShadow(true) : getShadow(false);
+      c.style.opacity = a > 2 ? 0.7 : 1;
+    });
+    document.getElementById("counter").textContent = (active + 1 < 10 ? "0" : "") + (active + 1) + " / 05";
+    document.querySelectorAll(".dot").forEach(function (d, i) { d.classList.toggle("on", i === active); });
+    document.querySelectorAll(".check-item").forEach(function (c, i) { c.classList.toggle("on", i === active); });
+  }
+
+  function getShadow(isActive) {
+    var s = getComputedStyle(document.documentElement);
+    return (isActive ? s.getPropertyValue("--card-shadow-a") : s.getPropertyValue("--card-shadow-i")).trim();
+  }
+
+  function setActive(i) {
+    active = (i + PROJECTS.length) % PROJECTS.length;
+    for (var k in flipped) { flipped[k] = false; cards[k].classList.remove("flipped"); }
+    layout();
+  }
+
+  // dots
+  var dots = document.getElementById("dots");
+  PROJECTS.forEach(function (p, i) {
+    var d = document.createElement("button");
+    d.className = "dot"; d.setAttribute("aria-label", "Go to work " + (i + 1));
+    d.addEventListener("click", function () { setActive(i); });
+    dots.appendChild(d);
+  });
+  document.getElementById("prev").addEventListener("click", function () { setActive(active - 1); });
+  document.getElementById("next").addEventListener("click", function () { setActive(active + 1); });
+
+  // keyboard
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") { setActive(active - 1); }
+    else if (e.key === "ArrowRight") { setActive(active + 1); }
+  });
+
+  // swipe
+  var sx = 0, sdown = false;
+  stage.addEventListener("pointerdown", function (e) { sdown = true; sx = e.clientX; });
+  window.addEventListener("pointerup", function (e) {
+    if (!sdown) return; sdown = false;
+    var dx = e.clientX - sx;
+    if (Math.abs(dx) > 55) { setActive(active + (dx < 0 ? 1 : -1)); }
+  });
+
+  // foreword
+  document.getElementById("foreword").innerHTML =
+    "<p>" + esc(PROFILE.intro) + "</p><p>" + esc(PROFILE.pitch) + "</p>";
+
+  // concordance
+  var cc = document.getElementById("concordance");
+  FIT.forEach(function (f, i) {
+    var n = "0" + (i + 1);
+    cc.insertAdjacentHTML("beforeend",
+      '<div class="cx req" data-n="' + n + '">' + esc(f[0]) + '</div>' +
+      '<div class="cx ev">' + esc(f[1]) + '</div>');
+  });
+
+  // checklist
+  var cl = document.getElementById("checklist");
+  PROJECTS.forEach(function (p, i) {
+    var li = document.createElement("li");
+    var b = document.createElement("button");
+    b.className = "check-item";
+    b.innerHTML =
+      '<span class="ci-cat">Cat. ' + p.n + '</span>' +
+      '<span class="ci-main"><span class="ci-title">' + esc(p.title) + '</span>' +
+      '<span class="ci-med">' + esc(p.medium) + '</span></span>' +
+      '<span class="ci-date">' + esc(p.year) + '</span>';
+    b.addEventListener("click", function () {
+      setActive(i);
+      document.querySelector(".gallery").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    });
+    li.appendChild(b);
+    cl.appendChild(li);
+  });
+
+  layout();
+})();
+</script>
+</body>
+</html>
