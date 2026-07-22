@@ -1,5 +1,3 @@
-import Anthropic from "@anthropic-ai/sdk";
-
 export const config = { runtime: "edge" };
 
 // Everything the assistant is allowed to know. It answers ONLY from this brief.
@@ -84,7 +82,7 @@ export default async function handler(req: Request): Promise<Response> {
         m.content.trim().length > 0
     )
     .slice(-16)
-    .map((m: any) => ({ role: m.role, content: m.content.slice(0, 2000) }));
+    .map((m: any) => ({ role: m.role, content: String(m.content).slice(0, 2000) }));
 
   if (messages.length === 0 || messages[messages.length - 1].role !== "user") {
     return new Response("Ask a question about Noah's work.", { status: 400 });
@@ -98,25 +96,62 @@ export default async function handler(req: Request): Promise<Response> {
     );
   }
 
-  const client = new Anthropic({ apiKey });
-
-  const stream = client.messages.stream({
-    model: "claude-haiku-4-5",
-    max_tokens: 500,
-    system: SYSTEM,
-    messages,
+  const upstream = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "x-api-key": apiKey,
+      "anthropic-version": "2023-06-01",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "claude-haiku-4-5",
+      max_tokens: 500,
+      system: SYSTEM,
+      stream: true,
+      messages,
+    }),
   });
 
+  if (!upstream.ok || !upstream.body) {
+    return new Response(
+      "The assistant is unavailable right now. You can email Noah at aderici@unc.edu.",
+      { status: 502 }
+    );
+  }
+
+  // Parse the Anthropic SSE stream and re-emit only the text deltas as plain text.
+  const reader = upstream.body.getReader();
+  const decoder = new TextDecoder();
   const encoder = new TextEncoder();
+  let buffer = "";
+
   const body = new ReadableStream({
-    async start(controller) {
+    async pull(controller) {
       try {
-        for await (const event of stream) {
-          if (
-            event.type === "content_block_delta" &&
-            event.delta.type === "text_delta"
-          ) {
-            controller.enqueue(encoder.encode(event.delta.text));
+        const { done, value } = await reader.read();
+        if (done) {
+          controller.close();
+          return;
+        }
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+        for (const line of lines) {
+          if (!line.startsWith("data:")) continue;
+          const data = line.slice(5).trim();
+          if (!data || data === "[DONE]") continue;
+          try {
+            const evt = JSON.parse(data);
+            if (
+              evt.type === "content_block_delta" &&
+              evt.delta &&
+              evt.delta.type === "text_delta" &&
+              typeof evt.delta.text === "string"
+            ) {
+              controller.enqueue(encoder.encode(evt.delta.text));
+            }
+          } catch {
+            /* ignore partial or non-JSON lines */
           }
         }
       } catch {
@@ -125,9 +160,11 @@ export default async function handler(req: Request): Promise<Response> {
             "\n\n(The assistant hit an error. You can email Noah at aderici@unc.edu.)"
           )
         );
-      } finally {
         controller.close();
       }
+    },
+    cancel() {
+      reader.cancel().catch(() => {});
     },
   });
 
