@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Noah Dericioglu — Five Works</title>
+<title>Noah Dericioglu — Six Works</title>
 <style>
   :root {
     /* gallery wall, day */
@@ -264,6 +264,50 @@
     * { transition: none !important; }
     html { scroll-behavior: auto; }
   }
+
+  /* ---------- ask the desk (chat) ---------- */
+  .desk { max-width: 680px; }
+  .desk-log {
+    display: flex; flex-direction: column; gap: 1.1rem;
+    min-height: 84px; max-height: 440px; overflow-y: auto;
+    padding: 0.2rem 0.1rem 0.4rem;
+  }
+  .desk-hint { margin: 0; color: var(--muted); font-style: italic; font-size: 0.98rem; max-width: 60ch; }
+  .msg { display: flex; flex-direction: column; gap: 0.28rem; }
+  .msg .who {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .msg.user .who { color: var(--accent); }
+  .msg .txt { font-size: 1.02rem; color: var(--ink); white-space: pre-wrap; line-height: 1.5; }
+  .msg.user .txt { color: var(--ink-2); }
+  .msg.typing .txt::after { content: "\2026"; color: var(--muted); }
+  .desk-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.2rem 0 0.9rem; }
+  .desk-chip {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.02em;
+    color: var(--ink-2); background: var(--tag-bg);
+    border: 1px solid var(--hair-2); border-radius: 100px;
+    padding: 0.4em 0.85em; cursor: pointer; transition: border-color 0.2s, color 0.2s;
+  }
+  .desk-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .desk-form { display: flex; gap: 0.6rem; align-items: stretch; }
+  .desk-form input {
+    flex: 1; min-width: 0; font-family: var(--serif); font-size: 1rem; color: var(--ink);
+    background: var(--tag-bg); border: 1px solid var(--hair-2);
+    border-radius: 4px; padding: 0.7em 0.9em; outline: none;
+  }
+  .desk-form input:focus { border-color: var(--accent); }
+  .desk-form button {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--wall); background: var(--accent);
+    border: 0; border-radius: 4px; padding: 0 1.3em; cursor: pointer;
+  }
+  .desk-form button:disabled { opacity: 0.5; cursor: default; }
+  .desk-foot {
+    margin: 0.9rem 0 0; font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.06em; color: var(--muted);
+  }
+  .desk-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
 </style>
 
 <div class="catalogue">
@@ -271,7 +315,7 @@
   <header class="plate">
     <div>
       <div class="colophon-top">
-        <span class="label">A survey of five works</span>
+        <span class="label">A survey of six works</span>
         <span class="label">MMXXVI</span>
       </div>
       <h1>Noah Dericioglu</h1>
@@ -289,7 +333,7 @@
   <section class="gallery">
     <div class="gallery-cap">
       <h2>The works <em>&nbsp;/ turn a card to read its entry</em></h2>
-      <span class="label" id="counter">01 / 05</span>
+      <span class="label" id="counter">01 / 06</span>
     </div>
     <div class="stage-wrap">
       <div class="stage" id="stage" role="group" aria-label="Portfolio works, use arrow keys to browse"></div>
@@ -316,9 +360,25 @@
     <ul class="checklist" id="checklist"></ul>
   </section>
 
+  <section class="section" id="desk-section">
+    <span class="label">Ask the desk</span>
+    <div class="desk">
+      <div class="desk-log" id="deskLog" aria-live="polite">
+        <p class="desk-hint">An assistant that answers questions about Noah's work, drawn from this catalogue. Ask about a project, a skill, or his fit for the role.</p>
+      </div>
+      <div class="desk-chips" id="deskChips"></div>
+      <form class="desk-form" id="deskForm">
+        <input id="deskInput" type="text" autocomplete="off" maxlength="500" placeholder="Ask about Noah's work..." aria-label="Ask about Noah's work" />
+        <button type="submit" id="deskSend">Ask</button>
+      </form>
+      <p class="desk-foot">Automated assistant, answering from Noah's portfolio &nbsp;·&nbsp; <a href="mailto:aderici@unc.edu">email Noah</a></p>
+    </div>
+  </section>
+
   <footer class="colophon">
     <span>Noah Dericioglu&nbsp;&nbsp;·&nbsp;&nbsp;aderici@unc.edu&nbsp;&nbsp;·&nbsp;&nbsp;(949) 438 8573</span>
-    <span>Five works, 2023 to 2026</span>
+    <span>curatedengineer.com</span>
+    <span>Six works, 2023 to 2026</span>
   </footer>
 
 </div>
@@ -328,8 +388,9 @@
   "use strict";
 
   var PROFILE = {
-    intro: "Five works made between a ship's bridge and a Paris apartment, a live order book and a wine glass. Each began as an algorithm and was carried somewhere it could fail, then engineered until it held.",
-    pitch: "I take ambiguous asks to working software that other people actually use. Python is my primary language, I build against real problems with language models, and I can explain the result to an engineer or a VP in the same meeting."
+    credo: "A problem solver who presents his solutions with a curator's eye, not an industrial one.",
+    intro: "Six works made between a ship's bridge and a Paris apartment, a live order book and a wine glass. Each began as an algorithm and was carried somewhere it could fail, then engineered until it held.",
+    pitch: "I take ambiguous asks to working software that other people actually use. Python is my primary language, I build against real problems with machine learning, and I can explain the result to an engineer or a VP in the same meeting."
   };
 
   var FIT = [
@@ -342,6 +403,7 @@
   ];
 
   var PALETTE = {
+    fleet:   { paper: "#EEF1F4", fa: "#4A5A6B", dink: "#1E262E", ba: "#9DB0C0", note: "signal in the noise" },
     bridge:  { paper: "#FBF5E6", fa: "#1C6B5F", dink: "#0E3A33", ba: "#7FD8C2", note: "tested at sea" },
     ac:      { paper: "#EEF4FB", fa: "#2F6EA8", dink: "#123C5C", ba: "#8FC6EC", note: "still building" },
     fund:    { paper: "#FBF3DF", fa: "#A9711B", dink: "#442D06", ba: "#E6BD57", note: "control over hype" },
@@ -351,7 +413,24 @@
 
   var PROJECTS = [
     {
-      id: "bridge", roman: "I", n: "01", title: "Bridge AI Monitoring System",
+      id: "fleet", roman: "I", n: "01", title: "Predictive Maintenance at Sea",
+      role: "Data Science Intern, DFDS", year: "Mar 2023 to Aug 2023", field: "Sensor Intelligence", seal: "SHIPPED",
+      medium: "Python, deep reinforcement learning, real-time data pipeline, AWS",
+      prov: "DFDS fleet, at sea",
+      blurb: "A model that listens to 200+ shipboard sensors, minute by minute, and reads trouble before it arrives.",
+      body: [
+        "Every ship in the fleet carries a nervous system: more than 200 sensors reporting minute by minute across 30-plus variables. On their own they are just noise. I built the pipeline that turns that firehose into a live, readable picture of how each vessel is actually behaving.",
+        "On top of it, predictive-maintenance models learn each ship's normal rhythm from historical and live data, so a slow drift toward failure is caught long before it becomes a breakdown at sea. A deep reinforcement-learning agent searches the same signal for the control patterns that keep performance optimal."
+      ],
+      specs: [
+        ["Scale", "200+ sensors per ship, 30+ variables, sampled every minute"],
+        ["Pipeline", "Real-time ingest and processing of fleet-wide telemetry"],
+        ["Models", "Predictive maintenance on historical and live data, long-horizon anomaly forecasting"],
+        ["Optimization", "Deep reinforcement-learning agent for actionable performance patterns"]
+      ]
+    },
+    {
+      id: "bridge", roman: "II", n: "02", title: "Bridge AI Monitoring System",
       role: "AI Project Lead, DFDS", year: "Dec 2023 to Aug 2024", field: "Maritime CV", seal: "SHIPPED",
       medium: "Computer vision, AWS pipeline, live operator portal",
       prov: "İstanbul / Trieste / Copenhagen",
@@ -369,7 +448,7 @@
       ]
     },
     {
-      id: "ac", roman: "II", n: "02", title: "Invisible AC",
+      id: "ac", roman: "III", n: "03", title: "Invisible AC",
       role: "Independent", year: "May 2026, ongoing", field: "Climate hardware", seal: "ONGOING",
       medium: "OpenSCAD CAD, ESP32 firmware, Python thermodynamics",
       prov: "Paris",
@@ -386,7 +465,7 @@
       ]
     },
     {
-      id: "fund", roman: "III", n: "03", title: "Multi-Strategy Systematic Fund",
+      id: "fund", roman: "IV", n: "04", title: "Multi-Strategy Systematic Fund",
       role: "Independent", year: "Nov 2025, ongoing", field: "Systematic markets", seal: "LIVE",
       medium: "Python, local LLM (Ollama), Hetzner",
       prov: "Cloud",
@@ -403,7 +482,7 @@
       ]
     },
     {
-      id: "pari", roman: "IV", n: "04", title: "Pari",
+      id: "pari", roman: "V", n: "05", title: "Pari",
       role: "Independent", year: "Jan 2026, ongoing", field: "Taste modeling", seal: "ONGOING",
       medium: "SwiftUI, Supabase (pgvector), Claude Vision",
       prov: "iOS",
@@ -420,8 +499,8 @@
       ]
     },
     {
-      id: "evasion", roman: "V", n: "05", title: "Earnings-Call Evasiveness Classifier",
-      role: "Capstone, BUSI/COMP 488, UNC, advised by Prof. Ringel", year: "Jan 2026 to May 2026", field: "Applied NLP", seal: "CAPSTONE",
+      id: "evasion", roman: "VI", n: "06", title: "Earnings-Call Evasiveness Classifier",
+      role: "Capstone, BUSI 488, UNC, advised by Prof. Ringel", year: "Jan 2026 to May 2026", field: "Applied NLP", seal: "CAPSTONE",
       medium: "Python, RoBERTa-large, six LLM APIs, logistic-regression stacking",
       prov: "UNC Chapel Hill",
       blurb: "A stacking ensemble that flags evasive answers in earnings-call Q&A, measured against the human agreement ceiling.",
@@ -511,7 +590,9 @@
       inner.style.boxShadow = isActive ? getShadow(true) : getShadow(false);
       c.style.opacity = a > 2 ? 0.7 : 1;
     });
-    document.getElementById("counter").textContent = (active + 1 < 10 ? "0" : "") + (active + 1) + " / 05";
+    var total = PROJECTS.length;
+    document.getElementById("counter").textContent =
+      (active + 1 < 10 ? "0" : "") + (active + 1) + " / " + (total < 10 ? "0" : "") + total;
     document.querySelectorAll(".dot").forEach(function (d, i) { d.classList.toggle("on", i === active); });
     document.querySelectorAll(".check-item").forEach(function (c, i) { c.classList.toggle("on", i === active); });
   }
@@ -555,7 +636,7 @@
 
   // foreword
   document.getElementById("foreword").innerHTML =
-    "<p>" + esc(PROFILE.intro) + "</p><p>" + esc(PROFILE.pitch) + "</p>";
+    "<p>" + esc(PROFILE.credo) + "</p><p>" + esc(PROFILE.intro) + "</p><p>" + esc(PROFILE.pitch) + "</p>";
 
   // concordance
   var cc = document.getElementById("concordance");
@@ -586,6 +667,112 @@
   });
 
   layout();
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+  var log = document.getElementById("deskLog");
+  var form = document.getElementById("deskForm");
+  var input = document.getElementById("deskInput");
+  var sendBtn = document.getElementById("deskSend");
+  var chipsEl = document.getElementById("deskChips");
+  if (!form) return;
+
+  var history = [];
+  var busy = false;
+
+  var STARTERS = [
+    "What did Noah build at DFDS?",
+    "Which project is he proudest of, and why?",
+    "Is he a fit for an AI engineering role?",
+    "What are his strongest technical skills?"
+  ];
+  STARTERS.forEach(function (q) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "desk-chip";
+    b.textContent = q;
+    b.addEventListener("click", function () { if (!busy) { input.value = q; submit(); } });
+    chipsEl.appendChild(b);
+  });
+
+  function addMsg(role, text) {
+    var d = document.createElement("div");
+    d.className = "msg " + role;
+    var who = document.createElement("span");
+    who.className = "who";
+    who.textContent = role === "user" ? "You" : "The desk";
+    var txt = document.createElement("span");
+    txt.className = "txt";
+    txt.textContent = text;
+    d.appendChild(who);
+    d.appendChild(txt);
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+    return d;
+  }
+
+  function submit() {
+    var q = input.value.trim();
+    if (!q || busy) return;
+    busy = true;
+    sendBtn.disabled = true;
+    input.value = "";
+    var hint = log.querySelector(".desk-hint");
+    if (hint) hint.remove();
+
+    addMsg("user", q);
+    history.push({ role: "user", content: q });
+
+    var botEl = addMsg("bot", "");
+    botEl.classList.add("typing");
+    var out = botEl.querySelector(".txt");
+    var acc = "";
+
+    function done() {
+      busy = false;
+      sendBtn.disabled = false;
+      if (history.length > 16) history = history.slice(-16);
+      input.focus();
+    }
+
+    fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: history })
+    }).then(function (res) {
+      if (!res.ok || !res.body) {
+        return res.text().then(function (t) { throw new Error(t || "bad response"); });
+      }
+      var reader = res.body.getReader();
+      var dec = new TextDecoder();
+      function pump() {
+        return reader.read().then(function (r) {
+          if (r.done) {
+            history.push({ role: "assistant", content: acc || "(no response)" });
+            done();
+            return;
+          }
+          acc += dec.decode(r.value, { stream: true });
+          botEl.classList.remove("typing");
+          out.textContent = acc;
+          log.scrollTop = log.scrollHeight;
+          return pump();
+        });
+      }
+      return pump();
+    }).catch(function (err) {
+      botEl.classList.remove("typing");
+      out.textContent = (err && /minute|break/i.test(err.message))
+        ? err.message
+        : "Something went wrong reaching the assistant. You can email Noah at aderici@unc.edu.";
+      done();
+    });
+  }
+
+  form.addEventListener("submit", function (e) { e.preventDefault(); submit(); });
 })();
 </script>
 </body>
