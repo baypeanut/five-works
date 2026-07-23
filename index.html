@@ -665,8 +665,8 @@
     var dx = e.clientX - sx;
     dragDx = dx;
     if (Math.abs(dx) > 45) { setActive(active + (dx < 0 ? 1 : -1)); }
-    // Clear after the click event that follows this pointerup has been handled.
-    setTimeout(function () { dragDx = 0; }, 0);
+    // dragDx stays set until the next pointerdown zeroes it, so the click that
+    // the browser fires right after this pointerup is reliably suppressed.
   });
 
   // keep the fan sized to the viewport
