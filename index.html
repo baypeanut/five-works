@@ -215,12 +215,9 @@
   .dot { width: 9px; height: 9px; border-radius: 100px; border: 0; background: var(--hair-2); cursor: pointer; padding: 0; transition: width 0.3s, background 0.3s; }
   .dot.on { width: 26px; background: var(--accent); }
 
-  /* ---------- foreword + concordance + checklist ---------- */
+  /* ---------- concordance + checklist ---------- */
   .section { margin-top: clamp(3rem, 8vw, 5rem); }
   .section > .label { display: block; margin-bottom: 1.1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--hair); }
-  .foreword { max-width: 62ch; }
-  .foreword p { margin: 0 0 1rem; font-size: clamp(1.02rem, 2.1vw, 1.16rem); color: var(--ink-2); }
-  .foreword p:first-of-type { font-size: clamp(1.12rem, 2.4vw, 1.32rem); color: var(--ink); }
 
   .concordance { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--hair); }
   .cx-row { display: contents; }
@@ -265,11 +262,30 @@
     html { scroll-behavior: auto; }
   }
 
+  /* ---------- gallery row: chat left, deck right ---------- */
+  .gallery-row {
+    display: grid;
+    grid-template-columns: minmax(290px, 370px) 1fr;
+    gap: clamp(1.4rem, 4vw, 3rem);
+    align-items: start;
+  }
+  .deck-col { min-width: 0; overflow: hidden; }
+  .desk-col { min-width: 0; padding-top: 0.2rem; }
+  .desk-col > .label {
+    display: block; margin-bottom: 1rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--hair);
+  }
+  @media (max-width: 900px) {
+    .gallery-row { grid-template-columns: 1fr; gap: 2.6rem; }
+    .deck-col { order: 1; overflow: visible; }
+    .desk-col { order: 2; }
+  }
+
   /* ---------- ask the desk (chat) ---------- */
-  .desk { max-width: 680px; }
+  .desk { max-width: 100%; }
   .desk-log {
     display: flex; flex-direction: column; gap: 1.1rem;
-    min-height: 84px; max-height: 440px; overflow-y: auto;
+    min-height: 84px; max-height: 320px; overflow-y: auto;
     padding: 0.2rem 0.1rem 0.4rem;
   }
   .desk-hint { margin: 0; color: var(--muted); font-style: italic; font-size: 0.98rem; max-width: 60ch; }
@@ -335,19 +351,35 @@
       <h2>The works <em>&nbsp;/ turn a card to read its entry</em></h2>
       <span class="label" id="counter">01 / 06</span>
     </div>
-    <div class="stage-wrap">
-      <div class="stage" id="stage" role="group" aria-label="Portfolio works, use arrow keys to browse"></div>
-    </div>
-    <div class="controls">
-      <button class="nav-btn" id="prev" aria-label="Previous work">&#8249;</button>
-      <div class="dots" id="dots"></div>
-      <button class="nav-btn" id="next" aria-label="Next work">&#8250;</button>
-    </div>
-  </section>
+    <div class="gallery-row">
 
-  <section class="section">
-    <span class="label">Curator&#8217;s note</span>
-    <div class="foreword" id="foreword"></div>
+      <div class="desk-col" id="desk-section">
+        <span class="label">Ask the desk</span>
+        <div class="desk">
+          <div class="desk-log" id="deskLog" aria-live="polite">
+            <p class="desk-hint">An assistant that answers questions about Noah's work, drawn from this catalogue. Ask about a project, a skill, or his fit for the role.</p>
+          </div>
+          <div class="desk-chips" id="deskChips"></div>
+          <form class="desk-form" id="deskForm">
+            <input id="deskInput" type="text" autocomplete="off" maxlength="500" placeholder="Ask about Noah's work..." aria-label="Ask about Noah's work" />
+            <button type="submit" id="deskSend">Ask</button>
+          </form>
+          <p class="desk-foot">Automated assistant, answering from Noah's portfolio &nbsp;·&nbsp; <a href="mailto:aderici@unc.edu">email Noah</a></p>
+        </div>
+      </div>
+
+      <div class="deck-col">
+        <div class="stage-wrap">
+          <div class="stage" id="stage" role="group" aria-label="Portfolio works, use arrow keys to browse"></div>
+        </div>
+        <div class="controls">
+          <button class="nav-btn" id="prev" aria-label="Previous work">&#8249;</button>
+          <div class="dots" id="dots"></div>
+          <button class="nav-btn" id="next" aria-label="Next work">&#8250;</button>
+        </div>
+      </div>
+
+    </div>
   </section>
 
   <section class="section">
@@ -358,21 +390,6 @@
   <section class="section">
     <span class="label">Checklist of the exhibition</span>
     <ul class="checklist" id="checklist"></ul>
-  </section>
-
-  <section class="section" id="desk-section">
-    <span class="label">Ask the desk</span>
-    <div class="desk">
-      <div class="desk-log" id="deskLog" aria-live="polite">
-        <p class="desk-hint">An assistant that answers questions about Noah's work, drawn from this catalogue. Ask about a project, a skill, or his fit for the role.</p>
-      </div>
-      <div class="desk-chips" id="deskChips"></div>
-      <form class="desk-form" id="deskForm">
-        <input id="deskInput" type="text" autocomplete="off" maxlength="500" placeholder="Ask about Noah's work..." aria-label="Ask about Noah's work" />
-        <button type="submit" id="deskSend">Ask</button>
-      </form>
-      <p class="desk-foot">Automated assistant, answering from Noah's portfolio &nbsp;·&nbsp; <a href="mailto:aderici@unc.edu">email Noah</a></p>
-    </div>
   </section>
 
   <footer class="colophon">
@@ -386,12 +403,6 @@
 <script>
 (function () {
   "use strict";
-
-  var PROFILE = {
-    credo: "A problem solver who presents his solutions with a curator's eye, not an industrial one.",
-    intro: "Six works made between a ship's bridge and a Paris apartment, a live order book and a wine glass. Each began as an algorithm and was carried somewhere it could fail, then engineered until it held.",
-    pitch: "I take ambiguous asks to working software that other people actually use. Python is my primary language, I build against real problems with machine learning, and I can explain the result to an engineer or a VP in the same meeting."
-  };
 
   var FIT = [
     ["Python, primary", "The through-line of every work below."],
@@ -500,7 +511,7 @@
     },
     {
       id: "evasion", roman: "VI", n: "06", title: "Earnings-Call Evasiveness Classifier",
-      role: "Capstone, BUSI 488, UNC, advised by Prof. Ringel", year: "Jan 2026 to May 2026", field: "Applied NLP", seal: "CAPSTONE",
+      role: "Capstone, UNC, advised by Prof. Ringel", year: "Jan 2026 to May 2026", field: "Applied NLP", seal: "CAPSTONE",
       medium: "Python, RoBERTa-large, six LLM APIs, logistic-regression stacking",
       prov: "UNC Chapel Hill",
       blurb: "A stacking ensemble that flags evasive answers in earnings-call Q&A, measured against the human agreement ceiling.",
@@ -633,10 +644,6 @@
     var dx = e.clientX - sx;
     if (Math.abs(dx) > 55) { setActive(active + (dx < 0 ? 1 : -1)); }
   });
-
-  // foreword
-  document.getElementById("foreword").innerHTML =
-    "<p>" + esc(PROFILE.credo) + "</p><p>" + esc(PROFILE.intro) + "</p><p>" + esc(PROFILE.pitch) + "</p>";
 
   // concordance
   var cc = document.getElementById("concordance");
