@@ -58,6 +58,7 @@
   html { scroll-behavior: smooth; }
   body {
     margin: 0;
+    overflow-x: hidden;
     background:
       radial-gradient(120% 80% at 50% -10%, var(--wall), var(--wall-2) 78%);
     color: var(--ink);
@@ -110,8 +111,9 @@
   .stage {
     position: relative;
     width: min(88vw, 392px);
-    height: min(60vh, 528px);
+    height: clamp(390px, 58vh, 528px);
     perspective: 1700px;
+    touch-action: pan-y;
   }
   .stage::after { /* soft floor shadow, works float on the wall */
     content: ""; position: absolute; left: 50%; bottom: -34px; transform: translateX(-50%);
@@ -276,9 +278,18 @@
     border-bottom: 1px solid var(--hair);
   }
   @media (max-width: 900px) {
-    .gallery-row { grid-template-columns: 1fr; gap: 2.6rem; }
-    .deck-col { order: 1; overflow: visible; }
+    .gallery-row { grid-template-columns: 1fr; gap: 2.4rem; }
+    .deck-col { order: 1; }
     .desk-col { order: 2; }
+  }
+  @media (max-width: 560px) {
+    .stage { width: min(84vw, 340px); }
+    .controls { margin-top: 2.6rem; gap: 0.9rem; }
+    .desk-log { max-height: 280px; }
+    .gallery-cap h2 { font-size: 1rem; }
+    .gallery-cap h2 em { display: none; }
+    .face { padding: 18px 18px 15px; }
+    .desk-chip { font-size: 0.64rem; }
   }
 
   /* ---------- ask the desk (chat) ---------- */
@@ -530,7 +541,15 @@
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var BASE_ROT = [-4, 3, -2, 4, -3];
-  var SPREAD = 116;
+  // Tighter fan on narrow screens so six cards never spill off a phone.
+  function spread() {
+    var w = window.innerWidth;
+    if (w < 480) return 46;
+    if (w < 700) return 68;
+    if (w < 900) return 92;
+    return 116;
+  }
+  var dragDx = 0;
   var active = 0;
   var flipped = {};
   var stage = document.getElementById("stage");
@@ -577,6 +596,8 @@
       '</div>';
 
     btn.addEventListener("click", function () {
+      // A swipe also fires a click; ignore it so dragging never flips a card.
+      if (Math.abs(dragDx) > 10) return;
       if (i === active) { flipped[i] = !flipped[i]; btn.classList.toggle("flipped", !!flipped[i]); }
       else { setActive(i); }
     });
@@ -590,7 +611,7 @@
       var a = Math.abs(rel);
       var isActive = rel === 0;
       var rot = isActive ? BASE_ROT[i % 5] * 0.4 : rel * 4 + BASE_ROT[i % 5] * 0.3;
-      var tx = isActive ? 0 : rel * SPREAD;
+      var tx = isActive ? 0 : rel * spread();
       var ty = a * 16;
       var sc = isActive ? 1 : 0.82;
       c.style.transform = "translateX(" + tx + "px) translateY(" + ty + "px) rotate(" + rot + "deg) scale(" + sc + ")";
@@ -638,11 +659,21 @@
 
   // swipe
   var sx = 0, sdown = false;
-  stage.addEventListener("pointerdown", function (e) { sdown = true; sx = e.clientX; });
+  stage.addEventListener("pointerdown", function (e) { sdown = true; sx = e.clientX; dragDx = 0; });
   window.addEventListener("pointerup", function (e) {
     if (!sdown) return; sdown = false;
     var dx = e.clientX - sx;
-    if (Math.abs(dx) > 55) { setActive(active + (dx < 0 ? 1 : -1)); }
+    dragDx = dx;
+    if (Math.abs(dx) > 45) { setActive(active + (dx < 0 ? 1 : -1)); }
+    // Clear after the click event that follows this pointerup has been handled.
+    setTimeout(function () { dragDx = 0; }, 0);
+  });
+
+  // keep the fan sized to the viewport
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(layout, 120);
   });
 
   // concordance
