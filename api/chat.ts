@@ -123,25 +123,28 @@ export default async function handler(req: Request): Promise<Response> {
   const reader = upstream.body.getReader();
   const decoder = new TextDecoder();
   const encoder = new TextEncoder();
-  let buffer = "";
 
   const body = new ReadableStream({
-    async pull(controller) {
+    async start(controller) {
+      let buffer = "";
+      let finished = false;
       try {
-        const { done, value } = await reader.read();
-        if (done) {
-          controller.close();
-          return;
-        }
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() || "";
-        for (const line of lines) {
-          if (!line.startsWith("data:")) continue;
-          const data = line.slice(5).trim();
-          if (!data || data === "[DONE]") continue;
-          try {
-            const evt = JSON.parse(data);
+        while (!finished) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() || "";
+          for (const line of lines) {
+            if (!line.startsWith("data:")) continue;
+            const data = line.slice(5).trim();
+            if (!data || data === "[DONE]") continue;
+            let evt: any;
+            try {
+              evt = JSON.parse(data);
+            } catch {
+              continue; // partial or non-JSON line
+            }
             if (
               evt.type === "content_block_delta" &&
               evt.delta &&
@@ -149,9 +152,12 @@ export default async function handler(req: Request): Promise<Response> {
               typeof evt.delta.text === "string"
             ) {
               controller.enqueue(encoder.encode(evt.delta.text));
+            } else if (evt.type === "message_stop" || evt.type === "error") {
+              // Anthropic signals the end of the turn here; close deterministically
+              // instead of waiting for the upstream connection to drop.
+              finished = true;
+              break;
             }
-          } catch {
-            /* ignore partial or non-JSON lines */
           }
         }
       } catch {
@@ -160,11 +166,18 @@ export default async function handler(req: Request): Promise<Response> {
             "\n\n(The assistant hit an error. You can email Noah at aderici@unc.edu.)"
           )
         );
-        controller.close();
+      } finally {
+        try {
+          await reader.cancel();
+        } catch {
+          /* already closed */
+        }
+        try {
+          controller.close();
+        } catch {
+          /* already closed */
+        }
       }
-    },
-    cancel() {
-      reader.cancel().catch(() => {});
     },
   });
 
