@@ -3,7 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Noah Dericioglu — Six Works</title>
+<title>Noah Dericioglu: Six Works</title>
+<meta name="description" content="Six built projects, from maritime computer vision to an LLM-driven trading system. Ask the built-in assistant about any of them.">
+<meta name="theme-color" content="#E7E5DE">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://curatedengineer.com/">
+<meta property="og:site_name" content="curatedengineer.com">
+<meta property="og:title" content="Noah Dericioglu: Six Works">
+<meta property="og:description" content="Six built projects, from maritime computer vision to an LLM-driven trading system. Ask the built-in assistant about any of them.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Noah Dericioglu: Six Works">
+<meta name="twitter:description" content="Six built projects, from maritime computer vision to an LLM-driven trading system. Ask the built-in assistant about any of them.">
 <style>
   :root {
     /* gallery wall, day */
@@ -97,6 +107,8 @@
   .wall-label .k { display: block; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
   .wall-label .role { color: var(--accent); font-weight: 600; letter-spacing: 0.02em; }
   .wall-label .team { color: var(--ink); }
+  /* tappable on a phone, but stays quiet so the accent colour is not overused */
+  .wall-label a[href^="tel:"] { color: inherit; }
 
   /* ---------- gallery / deck ---------- */
   .gallery { padding: clamp(1.5rem, 4vw, 2.4rem) 0 0; }
@@ -353,7 +365,7 @@
       <span class="role">AI Engineering Intern</span>
       <span class="team">UNC Finance &amp; Operations, AI Layer</span>
       <a href="mailto:aderici@unc.edu">aderici@unc.edu</a><br>
-      (949) 438&#8202;8573
+      <a href="tel:+19494388573">(949) 438 8573</a>
     </div>
   </header>
 
@@ -416,7 +428,7 @@
   "use strict";
 
   var FIT = [
-    ["Python, primary", "The through-line of every work below."],
+    ["Python, primary", "The through-line of every work in this catalogue."],
     ["LLM APIs, RAG, agents", "A six-model ensemble, LLM trading books, and Claude Vision label reads."],
     ["Ships to production", "An operator portal used by DFDS staff while at sea."],
     ["Cloud infrastructure", "An AWS ingestion pipeline and a self-hosted GPU box."],
@@ -653,6 +665,9 @@
 
   // keyboard
   document.addEventListener("keydown", function (e) {
+    // Don't steal the arrow keys while someone is typing in the chat box.
+    var t = e.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
     if (e.key === "ArrowLeft") { setActive(active - 1); }
     else if (e.key === "ArrowRight") { setActive(active + 1); }
   });
