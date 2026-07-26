@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Noah Dericioglu Portfolio</title>
 <meta name="description" content="Machine learning and computer vision work, from a system running on ships at sea to an LLM-driven trading model. Ask the built-in assistant about any of it.">
-<meta name="theme-color" content="#E7E5DE">
+<meta name="theme-color" content="#24333E">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://curatedengineer.com/">
 <meta property="og:site_name" content="curatedengineer.com">
@@ -15,53 +15,23 @@
 <meta name="twitter:title" content="Noah Dericioglu Portfolio">
 <meta name="twitter:description" content="Machine learning and computer vision work, from a system running on ships at sea to an LLM-driven trading model. Ask the built-in assistant about any of it.">
 <style>
-  :root {
-    /* gallery wall, day */
-    --wall:   #E7E5DE;
-    --wall-2: #DEDCD2;
-    --ink:    #1B1915;
-    --ink-2:  #474337;
-    --muted:  #837D6E;
-    --hair:   rgba(27, 25, 21, 0.16);
-    --hair-2: rgba(27, 25, 21, 0.30);
-    --accent: #A0392B;
-    --tag-bg: rgba(255, 255, 255, 0.55);
-    --card-shadow-a: 0 34px 66px rgba(52, 40, 20, 0.28);
-    --card-shadow-i: 0 16px 32px rgba(52, 40, 20, 0.20);
-    --floor: rgba(52, 40, 20, 0.16);
+  :root, :root[data-theme="light"], :root[data-theme="dark"] {
+    /* gallery wall, slate: a single committed look, not adaptive to OS light/dark */
+    --wall:   #24333E;
+    --wall-2: #1C2831;
+    --ink:    #E9EDF0;
+    --ink-2:  #B4BFC7;
+    --muted:  #8B99A4;
+    --hair:   rgba(233, 237, 240, 0.14);
+    --hair-2: rgba(233, 237, 240, 0.26);
+    --accent: #D8785F;
+    --tag-bg: rgba(255, 255, 255, 0.06);
+    --card-shadow-a: 0 36px 78px rgba(0, 0, 0, 0.50);
+    --card-shadow-i: 0 18px 38px rgba(0, 0, 0, 0.38);
+    --floor: rgba(0, 0, 0, 0.45);
 
     --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Hoefler Text", Georgia, serif;
     --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, "Cascadia Code", Consolas, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --wall:   #16150F;
-      --wall-2: #0E0D09;
-      --ink:    #EBE7DB;
-      --ink-2:  #B8B2A2;
-      --muted:  #857F70;
-      --hair:   rgba(235, 231, 219, 0.14);
-      --hair-2: rgba(235, 231, 219, 0.26);
-      --accent: #D5715F;
-      --tag-bg: rgba(255, 255, 255, 0.05);
-      --card-shadow-a: 0 36px 80px rgba(0, 0, 0, 0.62);
-      --card-shadow-i: 0 18px 40px rgba(0, 0, 0, 0.5);
-      --floor: rgba(0, 0, 0, 0.55);
-    }
-  }
-  :root[data-theme="light"] {
-    --wall:#E7E5DE; --wall-2:#DEDCD2; --ink:#1B1915; --ink-2:#474337; --muted:#837D6E;
-    --hair:rgba(27,25,21,0.16); --hair-2:rgba(27,25,21,0.30); --accent:#A0392B;
-    --tag-bg:rgba(255,255,255,0.55);
-    --card-shadow-a:0 34px 66px rgba(52,40,20,0.28); --card-shadow-i:0 16px 32px rgba(52,40,20,0.20);
-    --floor:rgba(52,40,20,0.16);
-  }
-  :root[data-theme="dark"] {
-    --wall:#16150F; --wall-2:#0E0D09; --ink:#EBE7DB; --ink-2:#B8B2A2; --muted:#857F70;
-    --hair:rgba(235,231,219,0.14); --hair-2:rgba(235,231,219,0.26); --accent:#D5715F;
-    --tag-bg:rgba(255,255,255,0.05);
-    --card-shadow-a:0 36px 80px rgba(0,0,0,0.62); --card-shadow-i:0 18px 40px rgba(0,0,0,0.5);
-    --floor:rgba(0,0,0,0.55);
   }
 
   * { box-sizing: border-box; }
@@ -170,6 +140,8 @@
   .face.back {
     background: var(--dink); color: #f6efe0; transform: rotateY(180deg);
     box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.06);
+    /* the wall is dark too now, so every card back needs a visible edge or it sinks in */
+    border-color: rgba(255, 255, 255, 0.18);
   }
   .card.flipped .face.front { opacity: 0; }
   .card:not(.flipped) .face.back { opacity: 0; }
@@ -435,7 +407,7 @@
   ];
 
   var PALETTE = {
-    fleet:   { paper: "#EEF1F4", fa: "#4A5A6B", dink: "#1E262E", ba: "#9DB0C0", note: "signal in the noise" },
+    fleet:   { paper: "#EEF1F4", fa: "#4A5A6B", dink: "#141B20", ba: "#9DB0C0", note: "signal in the noise" },
     bridge:  { paper: "#FBF5E6", fa: "#1C6B5F", dink: "#0E3A33", ba: "#7FD8C2", note: "tested at sea" },
     ac:      { paper: "#EEF4FB", fa: "#2F6EA8", dink: "#123C5C", ba: "#8FC6EC", note: "still building" },
     fund:    { paper: "#FBF3DF", fa: "#A9711B", dink: "#442D06", ba: "#E6BD57", note: "control over hype" },
