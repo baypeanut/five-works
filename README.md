@@ -1,6 +1,6 @@
-# Noah Dericioglu: Six Works (curatedengineer.com)
+# Noah Dericioglu Portfolio (curatedengineer.com)
 
-An exhibition-catalogue portfolio. Six works presented as a fanned deck of
+An exhibition-catalogue portfolio. Projects presented as a fanned deck of
 flippable catalogue plates, plus an "Ask the desk" assistant that answers
 visitor questions about Noah's work.
 

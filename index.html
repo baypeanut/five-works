@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Noah Dericioglu: Six Works</title>
-<meta name="description" content="Six built projects, from maritime computer vision to an LLM-driven trading system. Ask the built-in assistant about any of them.">
+<title>Noah Dericioglu Portfolio</title>
+<meta name="description" content="Machine learning and computer vision work, from a system running on ships at sea to an LLM-driven trading model. Ask the built-in assistant about any of it.">
 <meta name="theme-color" content="#E7E5DE">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://curatedengineer.com/">
 <meta property="og:site_name" content="curatedengineer.com">
-<meta property="og:title" content="Noah Dericioglu: Six Works">
-<meta property="og:description" content="Six built projects, from maritime computer vision to an LLM-driven trading system. Ask the built-in assistant about any of them.">
+<meta property="og:title" content="Noah Dericioglu Portfolio">
+<meta property="og:description" content="Machine learning and computer vision work, from a system running on ships at sea to an LLM-driven trading model. Ask the built-in assistant about any of it.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Noah Dericioglu: Six Works">
-<meta name="twitter:description" content="Six built projects, from maritime computer vision to an LLM-driven trading system. Ask the built-in assistant about any of them.">
+<meta name="twitter:title" content="Noah Dericioglu Portfolio">
+<meta name="twitter:description" content="Machine learning and computer vision work, from a system running on ships at sea to an LLM-driven trading model. Ask the built-in assistant about any of it.">
 <style>
   :root {
     /* gallery wall, day */
@@ -247,7 +247,7 @@
 
   .checklist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hair); }
   .check-item {
-    display: grid; grid-template-columns: 2.4rem 1fr auto; gap: 1rem; align-items: baseline;
+    display: grid; grid-template-columns: 2.4rem minmax(0, 1fr) auto; gap: 1rem; align-items: baseline;
     width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--hair);
     padding: 0.95rem 0.4rem; cursor: pointer; color: var(--ink); font-family: var(--serif);
     transition: background 0.2s, padding 0.2s;
@@ -256,8 +256,11 @@
   .check-item.on { padding-left: 0.8rem; }
   .check-item.on .ci-cat { color: var(--accent); }
   .ci-cat { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; }
-  .ci-main .ci-title { font-size: 1.08rem; }
-  .ci-main .ci-med { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin-top: 0.15rem; }
+  /* title and medium are separate lines: they are spans, so they need an explicit
+     block context or they run together on one line */
+  .ci-main { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+  .ci-main .ci-title { font-size: 1.08rem; line-height: 1.25; }
+  .ci-main .ci-med { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); line-height: 1.45; }
   .ci-date { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
   @media (max-width: 480px) { .ci-date { display: none; } .check-item { grid-template-columns: 2rem 1fr; } }
 
@@ -354,11 +357,11 @@
   <header class="plate">
     <div>
       <div class="colophon-top">
-        <span class="label">A survey of six works</span>
+        <span class="label">Selected projects</span>
         <span class="label">MMXXVI</span>
       </div>
       <h1>Noah Dericioglu</h1>
-      <p class="thesis">Systems built to survive contact with the real world.</p>
+      <p class="thesis">Computer science at UNC Chapel Hill. Machine learning, computer vision, and quantitative modeling.</p>
     </div>
     <div class="wall-label">
       <span class="k">Application to</span>
@@ -418,7 +421,7 @@
   <footer class="colophon">
     <span>Noah Dericioglu&nbsp;&nbsp;·&nbsp;&nbsp;aderici@unc.edu&nbsp;&nbsp;·&nbsp;&nbsp;(949) 438 8573</span>
     <span>curatedengineer.com</span>
-    <span>Six works, 2023 to 2026</span>
+    <span>2023 to 2026</span>
   </footer>
 
 </div>
